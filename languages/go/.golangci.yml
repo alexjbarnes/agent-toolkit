@@ -1,0 +1,89 @@
+# golangci-lint v2 config
+# Copy this file into your project root.
+# Run: golangci-lint run
+# Run with fixes: golangci-lint run --fix
+
+version: "2"
+
+formatters:
+  enable:
+    # gofumpt is a stricter gofmt. Enforces additional formatting rules
+    # that the community has largely converged on (e.g. no empty lines at
+    # the start/end of functions, grouped imports, etc).
+    - gofumpt
+
+linters:
+  enable:
+    # --- Correctness ---
+    - errcheck       # finds unchecked errors (the #1 source of subtle bugs in Go)
+    - govet          # reports suspicious constructs (e.g. Printf format mismatches)
+    - staticcheck    # the most comprehensive static analyser for Go
+    - unused         # finds unused code
+    - ineffassign    # finds assignments to variables that are never read
+    - unconvert      # finds unnecessary type conversions
+    - nilerr         # finds code that returns nil even when an error is checked
+    - nilnesserr     # finds code that returns a non-nil error when err is nil
+
+    # --- HTTP / resource safety ---
+    - bodyclose      # ensures HTTP response bodies are closed
+    - noctx          # finds HTTP requests sent without context.Context
+
+    # --- Error handling ---
+    - errorlint      # finds problems with error wrapping (Go 1.13+ error patterns)
+    - nolintlint     # ensures nolint directives are well-formed and justified
+
+    # --- Code quality ---
+    - gocritic       # opinionated linter with many useful checks
+    - misspell       # catches common English typos in comments and strings
+    - funlen         # keeps functions from growing unreasonably long
+    - gocognit       # flags functions with high cognitive complexity
+    - mnd            # magic number detector, forces named constants
+    - recvcheck      # checks for consistent receiver names
+
+    # --- Security ---
+    - gosec          # finds security issues (SQL injection, hardcoded creds, etc)
+
+    # --- Logging ---
+    - sloglint       # enforces consistent usage of log/slog
+
+    # --- Testing ---
+    - testifylint    # catches common mistakes with testify assertions
+
+    # --- Style ---
+    - wsl_v5         # enforces blank line discipline for readability
+
+  settings:
+    funlen:
+      # 200 lines / 100 statements is generous. If you exceed this,
+      # your function is doing too much.
+      lines: 200
+      statements: 100
+    gocognit:
+      # Cognitive complexity threshold. 50 is generous; consider
+      # breaking up functions that approach this limit.
+      min-complexity: 50
+
+  exclusions:
+    presets:
+      # Do not lint godoc comments or standard error handling patterns.
+      # These presets suppress noise from errcheck on fmt.Println, io.Close, etc.
+      - comments
+      - std-error-handling
+    rules:
+      # G104 (unhandled errors) is redundant with the errcheck linter.
+      - linters:
+          - gosec
+        text: "G104:"
+      # Test files get relaxed rules: standard permissions for fixtures,
+      # and no enforcement of function length, complexity, or magic numbers.
+      - path: _test\.go
+        linters:
+          - gosec
+          - funlen
+          - gocognit
+          - mnd
+
+issues:
+  # Show all issues found. Do not cap per-linter or per-issue.
+  max-issues-per-linter: 0
+  max-same-issues: 0

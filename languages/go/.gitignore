@@ -1,0 +1,24 @@
+# Binaries
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+bin/
+
+# Test binaries and coverage
+*.test
+*.out
+coverage.*
+*.coverprofile
+
+# Go workspace (use go.work.example if needed)
+go.work
+go.work.sum
+
+# Environment files (never commit secrets)
+.env
+
+# Editor/IDE (uncomment as needed)
+# .idea/
+# .vscode/
