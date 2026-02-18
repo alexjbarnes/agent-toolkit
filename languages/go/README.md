@@ -101,6 +101,12 @@ Standard library testing is fine for simple cases. testify reduces boilerplate w
 |---------|---------|---------|
 | [gin-gonic/gin](https://github.com/gin-gonic/gin) | `go get github.com/gin-gonic/gin` | HTTP framework. Fast, middleware-friendly, good error handling. |
 
+### Database
+
+| Package | Install | Purpose |
+|---------|---------|---------|
+| [modernc.org/sqlite](https://gitlab.com/cznic/sqlite) | `go get modernc.org/sqlite` | Pure Go SQLite driver. No CGO required, cross-compiles cleanly. |
+
 ### Frontend
 
 | Package | Install | Purpose |

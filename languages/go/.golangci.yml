@@ -52,6 +52,9 @@ linters:
     # --- Style ---
     - wsl_v5         # enforces blank line discipline for readability
 
+    # --- Documentation ---
+    - revive          # checks for godoc comments on exported symbols
+
   settings:
     funlen:
       # 200 lines / 100 statements is generous. If you exceed this,
@@ -62,12 +65,15 @@ linters:
       # Cognitive complexity threshold. 50 is generous; consider
       # breaking up functions that approach this limit.
       min-complexity: 50
+    revive:
+      # Only enable the exported rule. This checks that all exported
+      # types, functions, and methods have godoc comments.
+      rules:
+        - name: exported
 
   exclusions:
     presets:
-      # Do not lint godoc comments or standard error handling patterns.
-      # These presets suppress noise from errcheck on fmt.Println, io.Close, etc.
-      - comments
+      # Suppress noise from errcheck on fmt.Println, io.Close, etc.
       - std-error-handling
     rules:
       # G104 (unhandled errors) is redundant with the errcheck linter.
