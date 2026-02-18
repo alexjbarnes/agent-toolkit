@@ -1,0 +1,41 @@
+# GoReleaser config. Triggered by the build.yml workflow on version tags.
+# Produces binaries for linux/darwin/windows (amd64 + arm64).
+# <!-- TODO: customise project_name, main, and binary -->
+
+version: 2
+
+project_name: your-app
+
+builds:
+  - main: ./cmd/your-app
+    binary: your-app
+    ldflags:
+      - -X main.Version={{.Tag}}
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+      - darwin
+      - windows
+    goarch:
+      - amd64
+      - arm64
+    ignore:
+      # Windows on ARM64 has limited Go support and few users.
+      - goos: windows
+        goarch: arm64
+
+archives:
+  - formats:
+      - tar.gz
+    format_overrides:
+      - goos: windows
+        formats:
+          - zip
+
+checksum:
+  name_template: checksums.txt
+
+# Disable auto-generated changelog. Use CHANGELOG.md instead.
+changelog:
+  disable: true

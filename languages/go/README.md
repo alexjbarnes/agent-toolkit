@@ -2,6 +2,18 @@
 
 Opinionated guide for structuring and tooling a production Go project.
 
+## README Badges
+
+Copy these into your project README, replacing the placeholders.
+
+```markdown
+<!-- TODO: customise -- replace yourorg/your-project and gist ID -->
+[![CI](https://github.com/yourorg/your-project/actions/workflows/ci.yml/badge.svg)](https://github.com/yourorg/your-project/actions/workflows/ci.yml)
+[![Go](https://img.shields.io/badge/Go-1.24-00ADD8?logo=go&logoColor=white)](https://go.dev)
+[![Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/youruser/your-gist-id/raw/coverage.json)](https://github.com/yourorg/your-project/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+```
+
 ## Package Structure
 
 ```
@@ -18,11 +30,19 @@ your-project/
 │   ├── errors/            # custom error types
 │   └── logging/           # structured logging setup (slog)
 ├── pkg/                   # public library code (only if you intend others to import it)
+├── .github/workflows/     # CI/CD pipelines
+├── scripts/pre-commit     # TruffleHog secret scanning hook
 ├── .golangci.yml
+├── .goreleaser.yml
 ├── justfile
+├── renovate.json
 ├── go.mod
 ├── .env.example
-└── .gitignore
+├── .dockerignore
+├── .gitignore
+├── CHANGELOG.md
+├── CONTRIBUTING.md
+└── SECURITY.md
 ```
 
 Key rules:

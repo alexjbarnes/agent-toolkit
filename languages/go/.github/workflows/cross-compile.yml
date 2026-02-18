@@ -1,0 +1,23 @@
+# Reusable cross-compile check. Catches platform-specific build failures
+# before they reach GoReleaser.
+
+name: Cross-Compile
+
+on:
+  workflow_call:
+
+jobs:
+  cross-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+
+      - name: Cross-compile check
+        run: |
+          GOOS=darwin go build ./...
+          GOOS=windows go build ./...
+          GOOS=linux go build ./...

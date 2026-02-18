@@ -8,10 +8,26 @@ Everything here is opinionated and copy-paste ready. Grab what you need, drop it
 
 ```
 agent-toolkit/
-├── languages/go/       # Go project template (linter, justfile, gitignore, conventions)
-├── docker/             # Dockerfile templates and compose patterns
-├── opencode/           # Slash commands and plugins for opencode
-└── claude-code/        # Slash commands and plugins for Claude Code
+├── languages/go/               # Go project template
+│   ├── .github/workflows/      #   CI/CD pipelines (lint, test, build, secrets, renovate)
+│   ├── scripts/pre-commit      #   TruffleHog pre-commit hook
+│   ├── .golangci.yml           #   Linter config (v2)
+│   ├── .goreleaser.yml         #   Cross-platform release builds
+│   ├── justfile                #   Build/test/lint recipes
+│   ├── renovate.json           #   Dependency update config
+│   ├── .gitignore              #   Go-specific ignores
+│   ├── .dockerignore           #   Docker build context ignores
+│   ├── .env.example            #   Environment variable template
+│   ├── CONTRIBUTING.md         #   PR guidelines
+│   ├── SECURITY.md             #   Vulnerability reporting
+│   ├── CHANGELOG.md            #   Release notes template
+│   └── README.md               #   Setup guide, packages, conventions
+├── docker/                     # Docker templates
+│   ├── Dockerfile.go           #   Multi-stage Go build (Chainguard)
+│   ├── docker-compose.yml      #   App + Postgres + Redis
+│   └── README.md               #   Best practices
+├── opencode/                   # Slash commands and plugins for opencode
+└── claude-code/                # Slash commands and plugins for Claude Code
 ```
 
 ## Usage
@@ -19,10 +35,19 @@ agent-toolkit/
 ### Starting a new Go project
 
 ```bash
-# Copy the Go scaffolding into your new repo
+# Copy the full Go template into your new repo
+cp -r languages/go/.github     your-repo/
+cp -r languages/go/scripts     your-repo/
 cp languages/go/.golangci.yml  your-repo/
+cp languages/go/.goreleaser.yml your-repo/
 cp languages/go/justfile       your-repo/
+cp languages/go/renovate.json  your-repo/
 cp languages/go/.gitignore     your-repo/
+cp languages/go/.dockerignore  your-repo/
+cp languages/go/.env.example   your-repo/
+cp languages/go/CONTRIBUTING.md your-repo/
+cp languages/go/SECURITY.md    your-repo/
+cp languages/go/CHANGELOG.md   your-repo/
 
 # Copy the Docker files if you need containerisation
 cp docker/Dockerfile.go        your-repo/Dockerfile

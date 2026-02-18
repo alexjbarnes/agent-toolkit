@@ -44,5 +44,21 @@ tidy:
 clean:
     rm -rf bin/ coverage.out coverage.html
 
-# Pre-push check: lint, test, and build
-check: lint test build
+# Build Docker image
+docker-build:
+    docker build -f docker/Dockerfile -t {{app_name}}:{{version}} .
+
+# Cross-compile check
+cross-compile:
+    GOOS=darwin go build ./...
+    GOOS=windows go build ./...
+    GOOS=linux go build ./...
+
+# Install pre-commit hook (TruffleHog secret scanning)
+setup-hooks:
+    cp scripts/pre-commit .git/hooks/pre-commit
+    chmod +x .git/hooks/pre-commit
+    @echo "Pre-commit hook installed"
+
+# Pre-push check: lint, test, build, and cross-compile
+check: lint test build cross-compile
