@@ -5,7 +5,7 @@ FROM cgr.dev/chainguard/go AS builder
 WORKDIR /src
 
 # Copy dependency manifests first to cache the download layer.
-# Source code changes will not invalidate this cache.
+# Source code changes will not invalidated this cache.
 COPY go.mod go.sum ./
 RUN go mod download
 
@@ -13,15 +13,20 @@ RUN go mod download
 COPY . .
 
 # Build a statically linked binary.
-# CGO_ENABLED=0 ensures no libc dependency, so the binary runs in distroless/scratch.
+# CGO_ENABLED=0 ensures no libc dependency.
 # <!-- TODO: customise the binary name and cmd path -->
 ARG VERSION=dev
 RUN CGO_ENABLED=0 go build -ldflags "-X main.Version=${VERSION}" -o /app ./cmd/your-app
 
 # ---- Runtime stage ----
-# Chainguard static image: distroless, no shell, no package manager.
-# ~2MB base. Non-root by default.
-FROM cgr.dev/chainguard/static
+# Chainguard wolfi-base: minimal, secure, regularly patched.
+# Use wolfi-base over chainguard/static when the app needs to write
+# files at runtime (e.g. SQLite). Switch to chainguard/static if
+# the binary is fully stateless (no filesystem writes).
+FROM cgr.dev/chainguard/wolfi-base
+
+RUN mkdir -p /data && chown nonroot:nonroot /data
+USER nonroot
 
 COPY --from=builder /app /usr/local/bin/app
 
