@@ -24,7 +24,12 @@ jobs:
           go-version-file: go.mod
 
       - name: Run tests with coverage
-        run: go test -race -coverprofile=coverage.out ./...
+        run: |
+          go test -race -coverprofile=coverage.raw ./...
+          # Strip generated files from the coverage profile so they don't
+          # drag down the percentage. Add patterns as needed for your project
+          # (e.g. _templ.go for templ, mock_*.go for mockgen, *.pb.go for protobuf).
+          grep -v -E '_templ\.go|mock_.*\.go|\.pb\.go' coverage.raw > coverage.out
 
       - name: Check coverage threshold
         id: coverage

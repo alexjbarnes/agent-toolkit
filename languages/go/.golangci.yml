@@ -88,6 +88,11 @@ linters:
           - funlen
           - gocognit
           - mnd
+      # Generated files should not be linted. Add patterns as needed
+      # for your project (e.g. templ, mockgen, protobuf).
+      - path: (_templ\.go|mock_.*\.go|\.pb\.go)
+        linters:
+          - all
 
 issues:
   # Show all issues found. Do not cap per-linter or per-issue.

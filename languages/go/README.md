@@ -163,6 +163,14 @@ Standard library testing is fine for simple cases. testify reduces boilerplate w
 - Use `_test` package suffix for black-box tests where possible.
 - Run with `-race` flag always: `go test -race ./...`.
 
+### Generated files
+Generated code (templ templates, mockgen mocks, protobuf) should be excluded from both linting and coverage. The provided configs exclude these patterns:
+- `_templ.go` (templ HTML templates)
+- `mock_*.go` (uber-go/mock generated mocks)
+- `.pb.go` (protobuf generated code)
+
+Add your own patterns to `.golangci.yml` (exclusions), `test.yml` (coverage grep), and the `test-coverage` justfile recipe.
+
 ### Naming
 - Packages are lowercase, single-word where possible. No underscores.
 - Interfaces describe behaviour: `Reader`, `Syncer`, not `IReader`.

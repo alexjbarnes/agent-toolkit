@@ -17,9 +17,10 @@ run:
 test:
     go test -v -race ./...
 
-# Run tests and generate an HTML coverage report
+# Run tests and generate an HTML coverage report (excludes generated files)
 test-coverage:
-    go test -coverprofile=coverage.out ./...
+    go test -coverprofile=coverage.raw ./...
+    grep -v -E '_templ\.go|mock_.*\.go|\.pb\.go' coverage.raw > coverage.out
     go tool cover -func=coverage.out | tail -1
     go tool cover -html=coverage.out -o coverage.html
     @echo "Coverage report: coverage.html"
@@ -42,7 +43,7 @@ tidy:
 
 # Remove build artifacts
 clean:
-    rm -rf bin/ coverage.out coverage.html
+    rm -rf bin/ coverage.raw coverage.out coverage.html
 
 # Build Docker image
 docker-build:
