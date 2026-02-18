@@ -3,9 +3,7 @@
 
 services:
   app:
-    build:
-      context: .
-      dockerfile: Dockerfile.go
+    image: ghcr.io/yourorg/your-app:latest
     ports:
       - "8080:8080"
     env_file: .env
