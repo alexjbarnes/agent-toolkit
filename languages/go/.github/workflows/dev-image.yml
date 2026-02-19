@@ -1,0 +1,59 @@
+# Dev image workflow. Triggered by pushing a dev-* tag.
+# Runs lint and tests, then builds and pushes a Docker image to GHCR
+# tagged as "dev" (floating) and the tag suffix (e.g. dev-abc1234 -> abc1234).
+#
+# Usage:
+#   git tag dev-mybranch && git push origin dev-mybranch
+#   docker pull ghcr.io/yourorg/your-app:dev
+
+name: Dev Image
+
+on:
+  push:
+    tags: ["dev-*"]
+
+permissions:
+  contents: read
+  packages: write
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: ${{ github.repository }}
+
+jobs:
+  lint:
+    uses: ./.github/workflows/lint.yml
+
+  test:
+    uses: ./.github/workflows/test.yml
+
+  docker:
+    needs: [lint, test]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - uses: docker/metadata-action@v5
+        id: meta
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+          tags: |
+            type=raw,value=dev
+            type=match,pattern=dev-(.*),group=1
+
+      - uses: docker/build-push-action@v6
+        with:
+          context: .
+          # <!-- TODO: customise -- adjust path if your Dockerfile is elsewhere -->
+          file: docker/Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          build-args: |
+            VERSION=${{ github.ref_name }}

@@ -9,7 +9,7 @@ Everything here is opinionated and copy-paste ready. Grab what you need, drop it
 ```
 agent-toolkit/
 ├── languages/go/               # Go project template
-│   ├── .github/workflows/      #   CI/CD pipelines (lint, test, build, secrets, renovate)
+│   ├── .github/workflows/      #   CI/CD pipelines (lint, test, build, dev-image, secrets, renovate)
 │   ├── scripts/pre-commit      #   TruffleHog pre-commit hook
 │   ├── .golangci.yml           #   Linter config (v2)
 │   ├── .goreleaser.yml         #   Cross-platform release builds
