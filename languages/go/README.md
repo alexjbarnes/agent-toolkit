@@ -121,6 +121,12 @@ Standard library testing is fine for simple cases. testify reduces boilerplate w
 |---------|---------|---------|
 | [gin-gonic/gin](https://github.com/gin-gonic/gin) | `go get github.com/gin-gonic/gin` | HTTP framework. Fast, middleware-friendly, good error handling. |
 
+### Auth/OAuth
+
+| Package | Install | Purpose |
+|---------|---------|---------|
+| [ory/fosite](https://github.com/ory/fosite) | `go get github.com/ory/fosite/v2` | OAuth 2.0 server framework. Supports authorization code, PKCE, client credentials, DCR (RFC 7591), token introspection, and revocation. Implement the storage interfaces against your backend. |
+
 ### Database
 
 | Package | Install | Purpose |
