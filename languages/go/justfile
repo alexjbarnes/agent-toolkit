@@ -5,6 +5,29 @@ app_name := "your-app"
 version := `git describe --tags --always --dirty 2>/dev/null || echo "dev"`
 ldflags := "-X main.Version=" + version
 
+# Run with hot reload (auto-rebuilds on .go file changes, requires air)
+dev:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Starting {{app_name}} with hot reload..."
+    air
+
+# Run with hot reload in background (requires air)
+dev-bg:
+    #!/usr/bin/env bash
+    set -euo pipefail
+    echo "Starting {{app_name}} with hot reload in background..."
+    echo "Logs: tail -f /tmp/{{app_name}}-air.log"
+    nohup air > /tmp/{{app_name}}-air.log 2>&1 &
+    echo "Started (PID $!)"
+
+# Kill dev server processes
+kill:
+    #!/usr/bin/env bash
+    pkill -9 -f "tmp/{{app_name}}" 2>/dev/null || true
+    pkill -9 -f "air" 2>/dev/null || true
+    echo "Done"
+
 # Build the binary into bin/
 build:
     go build -ldflags "{{ldflags}}" -o bin/{{app_name}} ./cmd/{{app_name}}

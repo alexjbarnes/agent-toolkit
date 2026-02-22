@@ -11,9 +11,10 @@ agent-toolkit/
 ├── languages/go/               # Go project template
 │   ├── .github/workflows/      #   CI/CD pipelines (lint, test, build, dev-image, secrets, renovate)
 │   ├── scripts/pre-commit      #   TruffleHog pre-commit hook
+│   ├── .air.toml               #   air hot-reload config (dev workflow)
 │   ├── .golangci.yml           #   Linter config (v2)
 │   ├── .goreleaser.yml         #   Cross-platform release builds
-│   ├── justfile                #   Build/test/lint recipes
+│   ├── justfile                #   Build/test/lint/dev recipes
 │   ├── renovate.json           #   Dependency update config
 │   ├── .gitignore              #   Go-specific ignores
 │   ├── .dockerignore           #   Docker build context ignores
@@ -40,6 +41,7 @@ cp -r languages/go/.github     your-repo/
 cp -r languages/go/scripts     your-repo/
 cp languages/go/.golangci.yml  your-repo/
 cp languages/go/.goreleaser.yml your-repo/
+cp languages/go/.air.toml      your-repo/
 cp languages/go/justfile       your-repo/
 cp languages/go/renovate.json  your-repo/
 cp languages/go/.gitignore     your-repo/
