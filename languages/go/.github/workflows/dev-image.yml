@@ -1,6 +1,6 @@
 # Dev image workflow. Triggered by pushing a dev-* tag.
 # Runs lint and tests, then builds and pushes a Docker image to GHCR
-# tagged as "dev" (floating) and the tag suffix (e.g. dev-abc1234 -> abc1234).
+# tagged as "dev" (floating) and the full git tag (e.g. dev-abc1234).
 #
 # Usage:
 #   git tag dev-mybranch && git push origin dev-mybranch
@@ -46,7 +46,7 @@ jobs:
           flavor: latest=false
           tags: |
             type=raw,value=dev
-            type=match,pattern=dev-(.*),group=1
+            type=ref,event=tag
 
       - uses: docker/build-push-action@v6
         with:
