@@ -9,9 +9,9 @@
   "packageRules": [
     {
       "description": "Group all updates into a single PR to reduce noise",
-      "matchPackagePatterns": ["*"],
       "groupName": "all dependencies",
-      "groupSlug": "all"
+      "groupSlug": "all",
+      "matchPackageNames": ["*"]
     }
   ]
 }
