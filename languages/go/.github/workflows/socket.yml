@@ -1,6 +1,8 @@
 # Reusable dependency security scan using Socket.dev.
 # Catches supply-chain attacks in Go modules.
 # Requires a SOCKET_SECURITY_API_KEY secret.
+# For Dependabot PRs, this secret must also be added under
+# Settings > Secrets > Dependabot secrets.
 
 name: Socket Security
 
